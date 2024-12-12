@@ -9,6 +9,7 @@ import java.util.Optional;
  * Books published under other pseudonyms will be in their own Authors.
  */
 public class Author {
+
     private final String name;
     private final String id;
     private final List<Author> pseudonyms;
@@ -38,7 +39,7 @@ public class Author {
      * @return An Optional containing the author's highest rated book, if any.
      */
     public Optional<Book> getBestRatedBook() {
-        /* Here's the original, null-ridden implementation:
+        /* here's the original, null-ridden implementation:
         Book highestRatedBook = null;
         Double highestRating = -1.0;
         for (Book book : books) {
@@ -52,6 +53,18 @@ public class Author {
         */
 
         // PARTICIPANTS: Write a safer, more readable implementation using Optional.
-        return Optional.empty();
+
+        Book highestRatedBook = null;
+        Double highestRating = -1.0;
+        for (Book book : books) {
+            Optional<Double> rating = book.getWeightedRating();
+            if (rating.isPresent() && rating.get() > highestRating) {
+                highestRating = rating.get();
+                highestRatedBook = book;
+            }
+        }
+
+        return Optional.ofNullable(highestRatedBook);
     }
+
 }

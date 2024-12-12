@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class Book {
+
     private final String isbn;
     private final String title;
     private final List<Printing> printings;
@@ -63,12 +64,12 @@ public class Book {
      *     have been left.
      */
     public Optional<Double> getWeightedRating() {
-        // We'll keep this stream code, because it's so much easier
+        // we'll keep this stream code, because it's so much easier
         IntSummaryStatistics statistics = starRatings.stream()
             .mapToInt(Integer::intValue)
             .summaryStatistics();
 
-        /* Here's the original implementation:
+        /* here's the original implementation:
         if (statistics.getCount() == 0) {
             return null;
         } else {
@@ -77,7 +78,12 @@ public class Book {
         */
 
         // PARTICIPANTS: Make this safer with Optional.
-        return Optional.empty();
+
+        if (statistics.getCount() == 0) {
+            return Optional.empty();
+        } else {
+            return Optional.of(statistics.getAverage());
+        }
     }
 
     /**
@@ -86,7 +92,7 @@ public class Book {
      *     if any.
      */
     public Optional<Printing> getPaperback() {
-        /* Here's the original implementation:
+        /* here's the original implementation:
         Printing latestPaperback = null;
         for (Printing printing : printings) {
             if (printing.getPrintingType() == PrintingType.PAPERBACK) {
@@ -100,6 +106,17 @@ public class Book {
         */
 
         // PARTICIPANTS: Make this safer with Optional.
-        return Optional.empty();
+
+        Printing latestPaperback = null;
+        for (Printing printing : printings) {
+            if (printing.getPrintingType() == PrintingType.PAPERBACK) {
+                if (latestPaperback == null
+                        || latestPaperback.getPrintDate().before(printing.getPrintDate())) {
+                    latestPaperback = printing;
+                }
+            }
+        }
+        return Optional.ofNullable(latestPaperback);
     }
+
 }

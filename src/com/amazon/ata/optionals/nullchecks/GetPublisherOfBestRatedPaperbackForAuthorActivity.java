@@ -7,6 +7,7 @@ import com.amazon.ata.optionals.nullchecks.models.Printing;
 import com.amazon.ata.optionals.nullchecks.models.Publisher;
 
 public class GetPublisherOfBestRatedPaperbackForAuthorActivity {
+
     private final AuthorDao authorDao;
 
     public GetPublisherOfBestRatedPaperbackForAuthorActivity(AuthorDao authorDao) {
